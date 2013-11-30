@@ -1,11 +1,9 @@
 import groovy.sql.Sql
 
-class UserRegistry {
-    def registeredUsers = []
-
+class UserRegistryDatabase {
     def sql
 
-    public UserRegistry() {
+    public UserRegistryDatabase() {
         sql = Sql.newInstance('jdbc:sqlite:sample.db','org.sqlite.JDBC' )
     }
 
@@ -13,7 +11,6 @@ class UserRegistry {
         if (getUser(userName) != null) {
             throw new Exception("User already registered")
         }
-        // registeredUsers << new User(nick: userName)
         sql.executeInsert("insert into users(username) values(?)", [userName])
         return true
     }
@@ -26,7 +23,6 @@ class UserRegistry {
     }
 
     public User getUser(String userName) {
-        // return registeredUsers.find { it -> it.nick == userName }
         def row = sql.firstRow("select * from users where username = $userName")
         if (row == null) {
             return null

@@ -4,15 +4,15 @@ import groovy.sql.*
 class UserRegistrySpock extends Specification {
     def setup() {
         def sql = Sql.newInstance('jdbc:sqlite:sample.db','org.sqlite.JDBC' )
-        sql.execute("drop table users")
-        sql.execute("drop table user_following")
+        sql.execute("drop table if exists users")
+        sql.execute("drop table if exists user_following")
         sql.execute("create table users( username varchar primary_key )")
         sql.execute("create table user_following( user varchar, following varchar, primary key(user, following))")
     }
 
     void "user registration"() {
         setup:
-            def userRegistration = new UserRegistry()
+            def userRegistration = new UserRegistryDatabase()
 
         when:
             def result = userRegistration.registerUser(userName)
@@ -27,7 +27,7 @@ class UserRegistrySpock extends Specification {
 
     void "user cannot register twice"() {
         setup:
-            def userRegistration = new UserRegistry()
+            def userRegistration = new UserRegistryDatabase()
             userRegistration.registerUser(userName)
 
         when:
@@ -42,7 +42,7 @@ class UserRegistrySpock extends Specification {
 
     void "when i register a user i can return it"() {
         setup:
-            def userRegistration = new UserRegistry()
+            def userRegistration = new UserRegistryDatabase()
             userRegistration.registerUser(userName)
 
         when:
@@ -58,7 +58,7 @@ class UserRegistrySpock extends Specification {
 
     void "when you are not registered return null"() {
         setup:
-            def userRegistration = new UserRegistry()
+            def userRegistration = new UserRegistryDatabase()
 
         when:
             def result = userRegistration.getUser(userName)

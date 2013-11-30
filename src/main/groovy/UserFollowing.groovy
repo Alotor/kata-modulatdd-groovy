@@ -1,5 +1,5 @@
 class UserFollowing {
-    def registry = new UserRegistry()
+    def registry
 
     public boolean follow(String nickA, String nickB) {
         def userA = registry.getUser(nickA)
