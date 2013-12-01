@@ -33,4 +33,8 @@ class UserRegistryDatabase {
         }
         return result
     }
+
+    public List getUsers() {
+        return []
+    }
 }

@@ -20,4 +20,8 @@ class UserRegistryMemory {
     public User getUser(String userName) {
         return registeredUsers.find { it -> it.nick == userName }
     }
+
+    public List getUsers() {
+        return registeredUsers
+    }
 }
