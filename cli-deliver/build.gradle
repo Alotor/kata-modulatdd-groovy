@@ -6,9 +6,9 @@ repositories {
 }
 
 dependencies {
-    groovy "org.codehaus.groovy:groovy-all:1.8.6"
-    groovy 'org.xerial:sqlite-jdbc:3.7.2'
-    groovy project(':core')
+    compile "org.codehaus.groovy:groovy-all:1.8.6"
+    compile 'org.xerial:sqlite-jdbc:3.7.2'
+    compile project(':core')
 
     testCompile "org.spockframework:spock-core:0.6-groovy-1.8"
 }
