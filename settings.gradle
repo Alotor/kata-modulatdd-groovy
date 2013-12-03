@@ -2,3 +2,4 @@ rootProject.name = 'kata-modulatdd-groovy'
 
 include 'core'
 include 'cli-deliver'
+include 'web-deliver'

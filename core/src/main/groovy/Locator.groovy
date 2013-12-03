@@ -1,5 +1,5 @@
 class Locator {
-    static String type = "database"
+    static String type = "memory"
 
     static userRegistry
     static userFollowing

@@ -1,0 +1,12 @@
+body {
+    font-family: Arial;
+}
+
+.error {
+    font-size: 80%;
+    color: red;
+    margin-bottom: 10px;
+    padding: 5px;
+    border: 1px solid red;
+}
+

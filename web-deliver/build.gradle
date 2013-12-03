@@ -1,0 +1,22 @@
+apply plugin: "groovy"
+apply plugin: "war"
+apply plugin: "jetty"
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile "org.codehaus.groovy:groovy-all:1.8.6"
+    testCompile "org.spockframework:spock-core:0.6-groovy-1.8"
+
+    providedCompile "javax.servlet:servlet-api:2.5"
+    runtime "javax.servlet:jstl:1.1.2"
+
+    compile project(':core')
+}
+
+jettyRunWar {
+    contextPath = ""
+    httpPort = 3000
+}
