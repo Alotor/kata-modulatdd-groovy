@@ -4,6 +4,7 @@ import javax.servlet.http.HttpServletResponse
 
 public class TestServlet extends HttpServlet {
     def registry = Locator.locateUserRegistry()
+    def following = Locator.locateUserFollowing()
 
     @Override
     void doGet(HttpServletRequest request, HttpServletResponse response){
@@ -12,9 +13,15 @@ public class TestServlet extends HttpServlet {
 
     @Override
     void doPost(HttpServletRequest request, HttpServletResponse response) {
-        def userName = request.getParameter("user")
         try {
-            registry.registerUser(userName)
+            if (request.getParameter("registerButton")) {
+                def userName = request.getParameter("user")
+                registry.registerUser(userName)
+            } else {
+                def userA = request.getParameter("userA")
+                def userB = request.getParameter("userB")
+                following.follow(userA, userB)
+            }
             renderOutput(response)
         } catch(Exception e) {
             renderOutput(response, e.message)
@@ -32,7 +39,15 @@ public class TestServlet extends HttpServlet {
                 <form method="POST">
                     <label for="user">Usuario:</label>
                     <input type="text" name="user" id="user"></input>
-                    <input type="submit" value="Registrar"/>
+                    <input type="submit" name="registerButton" value="Registrar"/>
+
+                    <hr/>
+
+                    <label for="userA">Usuario A:</label>
+                    <input type="text" name="userA" id="userA"></input>
+                    <label for="userB">Usuario B:</label>
+                    <input type="text" name="userB" id="userB"></input>
+                    <input type="submit" name="followButton" value="Follow"/>
                 </form>
                 ${getUserListElement()}
             </body>
@@ -43,7 +58,7 @@ public class TestServlet extends HttpServlet {
     String getUserListElement() {
         def userList = "<ul class='user-list'>"
         registry.users.each {
-            userList += "<li>${it.nick}</li>"
+            userList += "<li>${it.nick} - ${it.followings}</li>"
         }
         userList += "</ul>"
         return userList
