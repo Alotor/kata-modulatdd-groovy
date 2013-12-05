@@ -3,8 +3,14 @@ import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
 public class TestServlet extends HttpServlet {
-    def registry = Locator.locateUserRegistry()
-    def following = Locator.locateUserFollowing()
+    def userStore
+    def followService
+
+    public TestServlet() {
+        Locator.initialize("database", [database: "sample"])
+        userStore = Locator.instance.userStore
+        followService = Locator.instance.followService
+    }
 
     @Override
     void doGet(HttpServletRequest request, HttpServletResponse response){
@@ -16,11 +22,11 @@ public class TestServlet extends HttpServlet {
         try {
             if (request.getParameter("registerButton")) {
                 def userName = request.getParameter("user")
-                registry.registerUser(userName)
+                userStore.registerUser(userName)
             } else {
                 def userA = request.getParameter("userA")
                 def userB = request.getParameter("userB")
-                following.follow(userA, userB)
+                followService.follow(userA, userB)
             }
             renderOutput(response)
         } catch(Exception e) {
@@ -57,7 +63,7 @@ public class TestServlet extends HttpServlet {
 
     String getUserListElement() {
         def userList = "<ul class='user-list'>"
-        registry.users.each {
+        userStore.users.each {
             userList += "<li>${it.nick} - ${it.followings}</li>"
         }
         userList += "</ul>"

@@ -2,21 +2,19 @@ import spock.lang.*
 import groovy.sql.*
 
 class UserFollowingSpock extends Specification {
+    def userFollowing
+    def userRegistry
+
     def setup() {
-        def sql = Sql.newInstance('jdbc:sqlite:sample.db','org.sqlite.JDBC' )
-        sql.execute("drop table if exists users")
-        sql.execute("drop table if exists user_following")
-        sql.execute("create table users( username varchar primary_key )")
-        sql.execute("create table user_following( user varchar, following varchar, primary key(user, following))")
+        Locator.initialize("memory")
+        userRegistry = Locator.instance.userStore
+        userFollowing = Locator.instance.followService
     }
 
     void "follow user"() {
         setup:
-            def userRegistry = new UserRegistryDatabase()
             userRegistry.registerUser(userA)
             userRegistry.registerUser(userB)
-
-            def userFollowing = new UserFollowing(registry: userRegistry)
 
         when:
             def result = userFollowing.follow(userA, userB)
@@ -31,12 +29,9 @@ class UserFollowingSpock extends Specification {
 
     void "user a follows b and then we check that is following"() {
         setup:
-            def userRegistry = new UserRegistryDatabase()
             userRegistry.registerUser(userA)
             userRegistry.registerUser(userB)
             userRegistry.registerUser(userC)
-
-            def userFollowing = new UserFollowing(registry: userRegistry)
 
             userFollowing.follow(userA, userB)
             userFollowing.follow(userA, userC)
@@ -58,11 +53,8 @@ class UserFollowingSpock extends Specification {
 
     void "When #userA follow #userB twice, you only got one following"() {
         setup:
-            def userRegistry = new UserRegistryDatabase()
             userRegistry.registerUser(userA)
             userRegistry.registerUser(userB)
-
-            def userFollowing = new UserFollowing(registry: userRegistry)
 
             userFollowing.follow(userA, userB)
             userFollowing.follow(userA, userB)

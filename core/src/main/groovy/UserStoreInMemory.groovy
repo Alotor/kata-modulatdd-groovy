@@ -1,9 +1,9 @@
 import groovy.sql.Sql
 
-class UserRegistryMemory {
+class UserStoreInMemory {
     def registeredUsers = []
 
-    public UserRegistryMemory() {
+    public UserStoreInMemory() {
     }
 
     public boolean registerUser(String userName) {

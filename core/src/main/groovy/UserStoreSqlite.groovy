@@ -1,10 +1,10 @@
 import groovy.sql.Sql
 
-class UserRegistryDatabase {
+class UserStoreSqlite {
     def sql
 
-    public UserRegistryDatabase() {
-        sql = Sql.newInstance('jdbc:sqlite:sample.db','org.sqlite.JDBC' )
+    public UserStoreSqlite(String database) {
+        sql = Sql.newInstance("jdbc:sqlite:${database}.db","org.sqlite.JDBC" )
     }
 
     public boolean registerUser(String userName) {
@@ -35,6 +35,12 @@ class UserRegistryDatabase {
     }
 
     public List getUsers() {
-        return []
+        def result = []
+
+        sql.eachRow("select * from users") { row->
+            result << getUser(row.username)
+        }
+
+        return result
     }
 }

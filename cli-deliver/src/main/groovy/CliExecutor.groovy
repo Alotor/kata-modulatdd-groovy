@@ -1,9 +1,13 @@
 import java.io.*
 
 class CliExecutor {
-    def registry = Locator.locateUserRegistry()
-    def following = Locator.locateUserFollowing()
+    def registry
+    def following
 
+    public CliExecutor() {
+        registry = Locator.instance.userStore
+        following = Locator.instance.followService
+    }
 
     public execute(String userInput) {
         if (userInput.startsWith("register")) {
@@ -43,7 +47,7 @@ Available commands:
     }
 
     public static main(args) {
-        Locator.type = "memory"
+        Locator.initialize("database", [database: "sample"])
         def executor = new CliExecutor()
         def reader = new BufferedReader(new InputStreamReader(System.in));
 

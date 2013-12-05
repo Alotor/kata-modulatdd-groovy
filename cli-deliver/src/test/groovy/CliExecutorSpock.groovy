@@ -1,15 +1,19 @@
 import spock.lang.*
 
 class CliExecutorSpock extends Specification {
+    def executor
+    def userStore
+
+    def setup() {
+        Locator.initialize("memory")
+        executor = new CliExecutor()
+        userStore = Locator.instance.userStore
+    }
+
     void "Register user"() {
-        setup:
-            Locator.type = "memory"
-
-            def executor = new CliExecutor()
-
         when:
             executor.execute("register $username")
-            def result = Locator.locateUserRegistry().getUser(username)
+            def result = userStore.getUser(username)
 
         then:
             result != null
@@ -21,13 +25,10 @@ class CliExecutorSpock extends Specification {
     }
 
     void "Follow user"() {
-        setup:
-            Locator.type = "memory"
-            def executor = new CliExecutor()
-
         when:
+            userStore.registerUser(userA)
             executor.execute("follow $userA $userB")
-            def result = Locator.locateUserRegistry().getUser(userA)
+            def result = userStore.getUser(userA)
 
         then:
             result != null
