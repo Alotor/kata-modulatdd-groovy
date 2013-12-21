@@ -24,5 +24,10 @@ grails {
 }
 
 dependencies {
-    compile "org.grails::tomcat:7.0.47"
+    compile "org.grails.plugins:tomcat:7.0.47"
+    runtime "com.h2database:h2:1.3.174"
+    // compile "org.grails.plugins:hibernate:3.6.10.6"
+    // compile "org.grails.plugins:scaffolding:2.0.1"
+    // compile 'org.grails.plugins:cache:1.1.1'
+    // compile "org.grails.plugins:resources:1.2.1"
 }
